@@ -29,11 +29,13 @@ void fragment() {
 		uv = vec2(1.0 - uv.x, uv.y);
 	}
 	
-	if(VIEW_INDEX==0)
+	if(uint(VIEW_INDEX)==0u)
 		ALBEDO = texture(textureL,uv).rgb;
 	else
 		ALBEDO = texture(textureR,uv).rgb;
-	ALBEDO = GammaToLinearSpace(vec4(ALBEDO, 1.0)).rgb;
+	if (!OUTPUT_IS_SRGB) {
+		ALBEDO = GammaToLinearSpace(vec4(ALBEDO, 1.0)).rgb;
+	}
 	ALBEDO *= albedo_color.rgb * texture(albedo_texture, UV).rgb;
 	
 	// Place fragment code here.
